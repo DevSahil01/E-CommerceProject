@@ -8,6 +8,7 @@ import MetaData from "../layout/MetaData";
 import AccountTreeIcon from "@material-ui/icons/AccountTree";
 import DescriptionIcon from "@material-ui/icons/Description";
 import StorageIcon from "@material-ui/icons/Storage";
+import LocalOfferIcon from '@material-ui/icons/LocalOffer';
 import SpellcheckIcon from "@material-ui/icons/Spellcheck";
 import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 import SideBar from "./Sidebar";
@@ -23,6 +24,7 @@ const NewProduct = ({ history }) => {
   const [price, setPrice] = useState(0);
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
+  const [MRP,setMRP]=useState(0);
   const [Stock, setStock] = useState(0);
   const [images, setImages] = useState([]);
   const [imagesPreview, setImagesPreview] = useState([]);
@@ -56,7 +58,8 @@ const NewProduct = ({ history }) => {
     const myForm = new FormData();
 
     myForm.set("name", name);
-    myForm.set("price", price);
+    myForm.set("MRP", MRP);
+    myForm.set("price",price);
     myForm.set("description", description);
     myForm.set("category", category);
     myForm.set("Stock", Stock);
@@ -108,6 +111,15 @@ const NewProduct = ({ history }) => {
                 required
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+              />
+            </div>
+            <div>
+              <LocalOfferIcon/>
+              <input
+                type="number"
+                placeholder="MRP"
+                required
+                onChange={(e) => setMRP(e.target.value)}
               />
             </div>
             <div>

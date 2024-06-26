@@ -113,6 +113,8 @@ const ProductDetails = ({ match ,history}) => {
     dispatch(getProductDetails(match.params.id));
   }, [dispatch, match.params.id, error, alert, reviewError, success]);
 
+  const DiscountPercent=Math.floor((((product.MRP-product.price)/product.MRP)*100))+"%";
+
   return (
     <Fragment>
       {loading ? (
@@ -148,7 +150,11 @@ const ProductDetails = ({ match ,history}) => {
                 </span>
               </div>
               <div className="detailsBlock-3">
-                <h1>{`₹${product.price}`}</h1>
+                <div className="priceBlock">
+                <h1 id="discount">{DiscountPercent}</h1>
+                <h1 id="price">{`₹${product.price}`}</h1>
+                <p id="MRP">M.R.P: <span>{`₹${product.MRP}`}</span></p>
+                </div>
                 <div className="detailsBlock-3-1">
                   <div className="detailsBlock-3-1-1">
                     <button onClick={decreaseQuantity}>-</button>

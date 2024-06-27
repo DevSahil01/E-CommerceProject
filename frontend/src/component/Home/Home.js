@@ -9,11 +9,10 @@ import Loader from "../layout/Loader/Loader";
 import { useAlert } from "react-alert";
 import MycartItems from "../Cart/myCartItems.js";
 
-const Home = () => {
+const Home = ({history}) => {
   const alert = useAlert();
   const dispatch = useDispatch();
   const { loading, error, products } = useSelector((state) => state.products);
-
   useEffect(() => {
     if (error) {
       alert.error(error);
@@ -49,7 +48,7 @@ const Home = () => {
                 <ProductCard key={product._id} product={product} />
               ))}
           </div>
-          <MycartItems/>
+          <MycartItems history={history}/>
         </Fragment>
       )}
     </Fragment>

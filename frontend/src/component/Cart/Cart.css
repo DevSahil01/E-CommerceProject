@@ -168,26 +168,42 @@
 }
 
 .checkoutSection{
-  
+    display: flex;
+    flex-direction: column;
+    gap: 5%;
     height: 50vh;
     width: 30vw;
     text-align:center;
     border: 1px solid rgba(85, 85, 85, 0.543) ;
     border-radius: 5px;
 }
+.checkoutSection > :first-child{
+    display: flex;
+    margin: 2vmax;
+}
 .checkoutSection{
-   font-size: 1.5vmax;
+   font-size: 1.3vmax;
+   font-family: 'roboto';
+}
+.checkoutSection > :nth-child(4){
+   font-size: 1.1vmax;
    font-family: 'roboto';
    font-weight: 500;
 }
 .checkoutSection > button {
    border: none;
    width: 80%;
-   padding: 0.8vmax;
-   background-color: #FA8900;
+   padding: 0.5vmax;
+   background-color: #f28500;
    border-radius: 20px;
    color: white;
+   margin: auto;
 }
+
+.checkoutSection > button:hover{
+    background-color: rgb(230, 136, 22);
+}
+
 
 .statusBar{
    width: 80%;

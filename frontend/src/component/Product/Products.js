@@ -27,7 +27,8 @@ const Products = ({ match }) => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [price, setPrice] = useState([0, 25000]);
-  const [category, setCategory] = useState("");
+  const query=new URLSearchParams(window.location.search);
+  const [category, setCategory] = useState(query.get('cat'));
 
   const [ratings, setRatings] = useState(0);
 

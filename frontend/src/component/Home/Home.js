@@ -8,6 +8,7 @@ import { useSelector, useDispatch } from "react-redux";
 import Loader from "../layout/Loader/Loader";
 import { useAlert } from "react-alert";
 import MycartItems from "../Cart/myCartItems.js";
+import Categories from "./Categories.js";
 
 const Home = ({history}) => {
   const alert = useAlert();
@@ -39,7 +40,9 @@ const Home = ({history}) => {
               </button>
             </a>
           </div>
-
+          <div>
+            <Categories history={history} />
+          </div>
           <h2 className="homeHeading">Featured Products</h2>
 
           <div className="container" id="container">

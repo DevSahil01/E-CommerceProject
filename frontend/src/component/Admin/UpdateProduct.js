@@ -13,6 +13,7 @@ import DescriptionIcon from "@material-ui/icons/Description";
 import StorageIcon from "@material-ui/icons/Storage";
 import SpellcheckIcon from "@material-ui/icons/Spellcheck";
 import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
+import LocalOfferIcon from "@material-ui/icons/LocalOffer";
 import SideBar from "./Sidebar";
 import { UPDATE_PRODUCT_RESET } from "../../constants/productConstants";
 
@@ -30,6 +31,7 @@ const UpdateProduct = ({ history, match }) => {
 
   const [name, setName] = useState("");
   const [price, setPrice] = useState(0);
+  const [MRP,setMRP]=useState(0);
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
   const [Stock, setStock] = useState(0);
@@ -56,6 +58,7 @@ const UpdateProduct = ({ history, match }) => {
       setName(product.name);
       setDescription(product.description);
       setPrice(product.price);
+      product.MRP && setMRP(product.MRP);
       setCategory(product.category);
       setStock(product.Stock);
       setOldImages(product.images);
@@ -92,6 +95,7 @@ const UpdateProduct = ({ history, match }) => {
     const myForm = new FormData();
 
     myForm.set("name", name);
+    myForm.set("MRP",MRP);
     myForm.set("price", price);
     myForm.set("description", description);
     myForm.set("category", category);
@@ -145,6 +149,15 @@ const UpdateProduct = ({ history, match }) => {
                 required
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+              />
+            </div>
+            <div>
+              <LocalOfferIcon/>
+              <input
+                type="number"
+                placeholder="MRP"
+                required
+                onChange={(e) => setMRP(e.target.value)}
               />
             </div>
             <div>

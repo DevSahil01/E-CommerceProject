@@ -111,6 +111,9 @@ const ProductDetails = ({ match ,history}) => {
       dispatch({ type: NEW_REVIEW_RESET });
     }
     dispatch(getProductDetails(match.params.id));
+
+    window.scrollTo(0,0);
+    
   }, [dispatch, match.params.id, error, alert, reviewError, success]);
 
   const DiscountPercent=Math.floor((((product.MRP-product.price)/product.MRP)*100))+"%";
@@ -140,10 +143,10 @@ const ProductDetails = ({ match ,history}) => {
             <div>
               <div className="detailsBlock-1">
                 <h2>{product.name}</h2>
-                <p>Product # {product._id}</p>
+                
               </div>
               <div className="detailsBlock-2">
-                <Rating {...options} />
+                <Rating {...options} size="medium" />
                 <span className="detailsBlock-2-span">
                   {" "}
                   ({product.numOfReviews} Reviews)

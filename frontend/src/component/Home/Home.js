@@ -7,6 +7,7 @@ import { clearErrors, getProduct } from "../../actions/productAction";
 import { useSelector, useDispatch } from "react-redux";
 import Loader from "../layout/Loader/Loader";
 import { useAlert } from "react-alert";
+import MycartItems from "../Cart/myCartItems.js";
 
 const Home = () => {
   const alert = useAlert();
@@ -48,6 +49,7 @@ const Home = () => {
                 <ProductCard key={product._id} product={product} />
               ))}
           </div>
+          <MycartItems/>
         </Fragment>
       )}
     </Fragment>

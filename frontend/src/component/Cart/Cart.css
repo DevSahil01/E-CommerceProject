@@ -123,6 +123,82 @@
   border-radius: 30px;
 }
 
+/* this is for home component cartItems component */
+.cartItems{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0.5vmax auto;
+  width: 50vw;
+}
+.cartItems > :first-child,
+.cartItems > :last-child
+ {
+  padding: 0.8vmax;
+  height: fit-content;
+}
+
+.cartItems > :first-child:hover,
+.cartItems > :last-child:hover{
+   background-color: #E5E5E5;
+
+}
+
+
+.cartItems > :nth-child(2){
+  display: flex;
+  width: 100%;
+  overflow-x:auto;
+}
+
+#cartContainer::-webkit-scrollbar{
+    height: 8px;
+}
+#cartContainer::-webkit-scrollbar-track{
+  background-color: #f1f1f1;
+  border-radius: 10px;
+}
+#cartContainer::-webkit-scrollbar-thumb{
+   background-color: #888;
+   border-radius: 10px;
+}
+
+#cartContainer::-webkit-scrollbar-thumb:hover{
+   background-color: #555;
+}
+
+.checkoutSection{
+  
+    height: 50vh;
+    width: 30vw;
+    text-align:center;
+    border: 1px solid rgba(85, 85, 85, 0.543) ;
+    border-radius: 5px;
+}
+.checkoutSection{
+   font-size: 1.5vmax;
+   font-family: 'roboto';
+   font-weight: 500;
+}
+.checkoutSection > button {
+   border: none;
+   width: 80%;
+   padding: 0.8vmax;
+   background-color: #FA8900;
+   border-radius: 20px;
+   color: white;
+}
+
+.statusBar{
+   width: 80%;
+   height: 10px;
+   background-color: white;
+   border: 1px solid #067D62;
+   overflow: hidden;
+   border-radius: 20px;
+   margin:auto;
+}
+
 @media screen and (max-width: 600px) {
   .cartPage {
     padding: 0;

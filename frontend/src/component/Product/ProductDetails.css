@@ -28,7 +28,7 @@
 
 .detailsBlock-1 > h2 {
   color: rgb(54, 54, 54);
-  font: 600 1.6vmax "Roboto";
+  font: 600 1.9vmax "Roboto";
 }
 
 .detailsBlock-1 > p {
@@ -89,6 +89,9 @@
   display: flex;
   align-items: center;
 }
+.detailsBlock-3-1 > :last-child{
+    background-color: #FA8900;
+}
 
 .detailsBlock-3-1-1 > button {
   border: none;
@@ -118,7 +121,7 @@
   color: white;
   transition: all 0.5s;
   background-color: tomato;
-  font: 500 0.7vmax "Roboto";
+  font: 500 1vmax "Roboto";
   border-radius: 20px;
   padding: 0.5vmax 2vmax;
   margin: 1vmax;
@@ -151,8 +154,8 @@
 .submitReview {
   border: none;
   background-color: tomato;
-  font: 500 0.7vmax "Roboto";
-  border-radius: 20px;
+  font: 500 0.9vmax "Roboto";
+  border-radius: 5px;
   padding: 0.6vmax 2vmax;
   margin: 1vmax 0;
   color: white;

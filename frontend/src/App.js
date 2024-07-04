@@ -47,11 +47,13 @@ function App() {
   const { isAuthenticated, user } = useSelector((state) => state.user);
 
   const [stripeApiKey, setStripeApiKey] = useState("");
+  const [stripeClientSecret,setStripeClientSecret]=useState('');
 
   async function getStripeApiKey() {
     const { data } = await axios.get("/api/v1/stripeapikey");
     console.log(data)
     setStripeApiKey(data.stripeApiKey);
+    setStripeClientSecret(data.stripeClientSecret);
   }
 
   useEffect(() => {
@@ -75,7 +77,7 @@ function App() {
       {isAuthenticated && <UserOptions user={user} />}
 
       {stripeApiKey && (
-        <Elements stripe={loadStripe(stripeApiKey)}>
+        <Elements stripe={loadStripe(stripeApiKey)}  options={{clientSecret:stripeClientSecret}} >
           <ProtectedRoute exact path="/process/payment" component={Payment} />
         </Elements>
       )}

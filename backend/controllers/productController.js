@@ -1,8 +1,11 @@
 const Product = require("../models/productModel");
+const userData=require("../models/userData");
+const jwt=require('jsonwebtoken');
 const ErrorHander = require("../utils/errorhander");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const ApiFeatures = require("../utils/apifeatures");
 const cloudinary = require("cloudinary");
+const { isAuthenticatedUser } = require("../middleware/auth");
 
 // Create Product -- Admin
 exports.createProduct = catchAsyncErrors(async (req, res, next) => {
@@ -80,15 +83,41 @@ exports.getProductDetails = catchAsyncErrors(async (req, res, next) => {
   const product = await Product.findById(req.params.id);
   const relatedPr=await Product.find({category:product.category})
 
+
   if (!product) {
     return next(new ErrorHander("Product not found", 404));
+  }
+
+  if(req.cookies['token']){
+      const {id}=jwt.verify(req.cookies['token'],process.env.JWT_SECRET);
+      userData.find({userid:id})
+      .then(doc=>{
+          userData.findByIdAndUpdate(doc[0]._id,
+            {
+              productHistory:[...doc[0].productHistory,{productId:req.params.id}]
+            }
+          )
+
+      }
+      )
+      .catch(err=>console.log(err))
+
+      // const productHistory=new userData({
+      //       userid:id,
+      //       productHistory:{
+      //         productId:req.params.id
+      //       } 
+      //   })
+      //   productHistory.save();
+
+      //   userData.find().then((doc)=>console.log(doc)).catch(err=>console.log(err))
   }
 
   res.status(200).json({
     success: true,
     productData:[product,relatedPr]
   });
-});
+})
 
 // Update Product -- Admin
 

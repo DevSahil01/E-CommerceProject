@@ -46,15 +46,15 @@ import NotFound from "./component/layout/Not Found/NotFound";
 function App() {
   const { isAuthenticated, user } = useSelector((state) => state.user);
 
-  const [stripeApiKey, setStripeApiKey] = useState("");
-  const [stripeClientSecret,setStripeClientSecret]=useState('');
+  // const [stripeApiKey, setStripeApiKey] = useState("");
+  // const [stripeClientSecret,setStripeClientSecret]=useState('');
 
-  async function getStripeApiKey() {
-    const { data } = await axios.get("/api/v1/stripeapikey");
-    console.log(data)
-    setStripeApiKey(data.stripeApiKey);
-    setStripeClientSecret(data.stripeClientSecret);
-  }
+  // async function getStripeApiKey() {
+  //   const { data } = await axios.get("/api/v1/stripeapikey");
+  //   console.log(data)
+  //   setStripeApiKey(data.stripeApiKey);
+  //   setStripeClientSecret(data.stripeClientSecret);
+  // }
 
   useEffect(() => {
     WebFont.load({
@@ -65,7 +65,7 @@ function App() {
 
     store.dispatch(loadUser());
 
-    getStripeApiKey();
+    // getStripeApiKey();
   }, []);
 
   window.addEventListener("contextmenu", (e) => e.preventDefault());
@@ -76,11 +76,11 @@ function App() {
 
       {isAuthenticated && <UserOptions user={user} />}
 
-      {stripeApiKey && (
+      {/* {stripeApiKey && (
         <Elements stripe={loadStripe(stripeApiKey)}  options={{clientSecret:stripeClientSecret}} >
           <ProtectedRoute exact path="/process/payment" component={Payment} />
         </Elements>
-      )}
+      )} */}
 
       <Switch>
         <Route exact path="/" component={Home} />

@@ -1,11 +1,11 @@
 import React from "react";
 
-import { PaymentElement } from "@stripe/react-stripe-js";
+// import { PaymentElement } from "@stripe/react-stripe-js";
 
 const CheckOut=()=>{
    return (
       <form>
-        <PaymentElement/>
+        {/* <PaymentElement/> */}
         <button > submit</button>
       </form>
    )

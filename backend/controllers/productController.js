@@ -91,26 +91,20 @@ exports.getProductDetails = catchAsyncErrors(async (req, res, next) => {
   if(req.cookies['token']){
       const {id}=jwt.verify(req.cookies['token'],process.env.JWT_SECRET);
       userData.find({userid:id})
-      .then(doc=>{
-          userData.findByIdAndUpdate(doc[0]._id,
-            {
-              productHistory:[...doc[0].productHistory,{productId:req.params.id}]
-            }
-          )
-
-      }
-      )
-      .catch(err=>console.log(err))
-
-      // const productHistory=new userData({
-      //       userid:id,
-      //       productHistory:{
-      //         productId:req.params.id
-      //       } 
-      //   })
-      //   productHistory.save();
-
-      //   userData.find().then((doc)=>console.log(doc)).catch(err=>console.log(err))
+      .then((doc)=>{
+          const productHistory=doc[0].productHistory.filter((pr)=>{return pr.productId!==req.params.id});
+          console.log(productHistory);
+          userData.findByIdAndUpdate(doc[0]._id,{
+            productHistory:[...productHistory,{productId:req.params.id}]
+          }).then((doc)=>console.log('users product history updated'))
+      })
+      .catch(err=>{
+           const userDataForProduct=new userData({
+               userid:id,
+               productHistory:[{productId:req.params.id}]
+           })
+           userDataForProduct.save();
+      })
   }
 
   res.status(200).json({

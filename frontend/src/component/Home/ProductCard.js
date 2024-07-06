@@ -12,8 +12,7 @@ const ProductCard = ({ product,Comp }) => {
   const redirectURL=Comp==='cart'?`/product/${product.product}`:`/product/${product._id}`
   return (
     <Link className="productCard" to={redirectURL}>
-      <img src={Comp==='cart'?product.image : product.images[0].url} alt={product.name} />
-      
+      <img src={Comp==='cart'?product.image : product['images'][0].url} alt={product.name} />
       <p>{product.name}</p>
       {Comp==='cart'?
       <div className="priceBlock">

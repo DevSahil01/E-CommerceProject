@@ -291,7 +291,10 @@ exports.deleteUser = catchAsyncErrors(async (req, res, next) => {
 
 //getUserData
 exports.getUserData= catchAsyncErrors(async (req,res,next)=>{
-   const pr_history=await userData.findOne({userid:req.user._id}).populate('productHistory.productId');
+   const pr_history=await userData.findOne({userid:req.user._id}).populate({
+    path:'productHistory.productId',
+    select:'name images MRP price'
+  });
    
     if(pr_history){
         res.status(200).json({

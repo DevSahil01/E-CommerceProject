@@ -92,10 +92,11 @@ exports.getProductDetails = async (req, res, next) => {
 
   if(req.cookies['token']){
       const {id}=jwt.verify(req.cookies['token'],process.env.JWT_SECRET);
-
+      
       userData.find({userid:id})
       .then((doc)=>{
-          const productHistory=doc[0].productHistory.filter((pr)=>{return pr.productId!==req.params.id});
+          const productHistory=doc[0].productHistory.filter((pr)=>
+            {return  !mongoose.Types.ObjectId(pr.productId).equals(mongoose.Types.ObjectId(req.params.id))});
           userData.findByIdAndUpdate(doc[0]._id,{
             productHistory:[...productHistory,{productId:req.params.id}]
           }).then(doc=>console.log('doc updated successfully'))

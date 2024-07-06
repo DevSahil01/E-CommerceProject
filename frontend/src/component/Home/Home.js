@@ -9,6 +9,7 @@ import Loader from "../layout/Loader/Loader";
 import { useAlert } from "react-alert";
 import MycartItems from "../Cart/myCartItems.js";
 import Categories from "./Categories.js";
+import ProductHistory from "./ProductHistory.js";
 
 const Home = ({history}) => {
   const alert = useAlert();
@@ -52,6 +53,7 @@ const Home = ({history}) => {
               ))}
           </div>
           <MycartItems history={history}/>
+          <ProductHistory/>
         </Fragment>
       )}
     </Fragment>

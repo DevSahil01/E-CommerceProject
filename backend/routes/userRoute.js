@@ -8,6 +8,7 @@ const {
   getUserDetails,
   updatePassword,
   updateProfile,
+  getUserData,
   getAllUser,
   getSingleUser,
   updateUserRole,
@@ -18,6 +19,8 @@ const { isAuthenticatedUser, authorizeRoles } = require("../middleware/auth");
 const router = express.Router();
 
 router.route("/register").post(registerUser);
+
+router.route("/userdata").get(isAuthenticatedUser,getUserData);
 
 router.route("/login").post(loginUser);
 

@@ -1,11 +1,13 @@
 const Product = require("../models/productModel");
 const userData=require("../models/userData");
+const mongoose=require('mongoose');
 const jwt=require('jsonwebtoken');
 const ErrorHander = require("../utils/errorhander");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const ApiFeatures = require("../utils/apifeatures");
 const cloudinary = require("cloudinary");
 const { isAuthenticatedUser } = require("../middleware/auth");
+const { isValidObjectId, Mongoose } = require("mongoose");
 
 // Create Product -- Admin
 exports.createProduct = catchAsyncErrors(async (req, res, next) => {
@@ -43,7 +45,7 @@ exports.createProduct = catchAsyncErrors(async (req, res, next) => {
 
 // Get All Product
 exports.getAllProducts = catchAsyncErrors(async (req, res, next) => {
-  // console.log('hi')
+  console.log('hi')
   const resultPerPage = 8;
   const productsCount = await Product.countDocuments();
 
@@ -79,7 +81,7 @@ exports.getAdminProducts = catchAsyncErrors(async (req, res, next) => {
 });
 
 // Get Product Details
-exports.getProductDetails = catchAsyncErrors(async (req, res, next) => {
+exports.getProductDetails = async (req, res, next) => {
   const product = await Product.findById(req.params.id);
   const relatedPr=await Product.find({category:product.category})
 
@@ -90,20 +92,21 @@ exports.getProductDetails = catchAsyncErrors(async (req, res, next) => {
 
   if(req.cookies['token']){
       const {id}=jwt.verify(req.cookies['token'],process.env.JWT_SECRET);
+
       userData.find({userid:id})
       .then((doc)=>{
           const productHistory=doc[0].productHistory.filter((pr)=>{return pr.productId!==req.params.id});
-          console.log(productHistory);
           userData.findByIdAndUpdate(doc[0]._id,{
             productHistory:[...productHistory,{productId:req.params.id}]
-          }).then((doc)=>console.log('users product history updated'))
+          }).then(doc=>console.log('doc updated successfully'))
+          .catch(err=>console.log(err))
       })
       .catch(err=>{
            const userDataForProduct=new userData({
                userid:id,
                productHistory:[{productId:req.params.id}]
            })
-           userDataForProduct.save();
+           userDataForProduct.save()
       })
   }
 
@@ -111,7 +114,7 @@ exports.getProductDetails = catchAsyncErrors(async (req, res, next) => {
     success: true,
     productData:[product,relatedPr]
   });
-})
+}
 
 // Update Product -- Admin
 

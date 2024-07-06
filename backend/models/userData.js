@@ -1,16 +1,21 @@
 const mongoose = require('mongoose');
-const { Schema } = mongoose;
 
 
-const productHistory=new Schema({productId:String,timeStamp:{type:Date,default:Date.now}});
+const productHistory=new mongoose.Schema({productId:{
+    type: mongoose.SchemaTypes.ObjectId,
+    ref:'Product',
+    required:true
+}
+  ,timeStamp:{type:Date,default:Date.now}});
 
 
-const userData=new Schema({
+const userData=new mongoose.Schema({
      userid:{
-        type:String
+        type:mongoose.SchemaTypes.ObjectId,
+        ref:'User'
      },
      productHistory:[productHistory]
 });
 
 
-module.exports = mongoose.model("userData", userData);
+module.exports = mongoose.model("Userdata", userData);

@@ -5,6 +5,7 @@ const sendToken = require("../utils/jwtToken");
 const sendEmail = require("../utils/sendEmail");
 const crypto = require("crypto");
 const cloudinary = require("cloudinary");
+const userData = require("../models/userData");
 
 // Register a User
 exports.registerUser = catchAsyncErrors(async (req, res, next) => {
@@ -284,3 +285,16 @@ exports.deleteUser = catchAsyncErrors(async (req, res, next) => {
     message: "User Deleted Successfully",
   });
 });
+
+
+
+//getUserData
+exports.getUserData= catchAsyncErrors(async (req,res,next)=>{
+   const pr_history=await userData.findOne({userid:req.user._id});
+   console.log(req.user)
+    if(pr_history){
+        res.status(200).json({
+           productHistory:pr_history
+        })
+    }  
+})

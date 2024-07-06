@@ -1,11 +1,16 @@
-import React, { useEffect } from 'react'
+import React, { useEffect } from 'react';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 
 
 const ProductHistory = () => {
+  const getProductHistory=async ()=>{
+       const {productHistory}=(await axios.get('/api/v1/userdata')).data['productHistory'];
+      console.log(productHistory)
+       
+  }
   useEffect(()=>{
-      axios.get('/api/v1/userdata')
-      .then(res=>console.log(res,'request is deployed')).catch(err=>console.log(err))
+      getProductHistory()
   },[])
   return (
     <div>

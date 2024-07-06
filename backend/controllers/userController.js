@@ -6,6 +6,7 @@ const sendEmail = require("../utils/sendEmail");
 const crypto = require("crypto");
 const cloudinary = require("cloudinary");
 const userData = require("../models/userData");
+const productModel = require("../models/productModel");
 
 // Register a User
 exports.registerUser = catchAsyncErrors(async (req, res, next) => {
@@ -291,7 +292,13 @@ exports.deleteUser = catchAsyncErrors(async (req, res, next) => {
 //getUserData
 exports.getUserData= catchAsyncErrors(async (req,res,next)=>{
    const pr_history=await userData.findOne({userid:req.user._id});
-   console.log(req.user)
+   const productHistory = await Product.find({
+    _id: { $in: pr_history.productHistory }
+  }).exec();
+
+
+  console.log(productHistory)
+
     if(pr_history){
         res.status(200).json({
            productHistory:pr_history

@@ -9,6 +9,7 @@ import Slider from "@material-ui/core/Slider";
 import { useAlert } from "react-alert";
 import Typography from "@material-ui/core/Typography";
 import MetaData from "../layout/MetaData";
+import { useParams } from "react-router-dom";
 
 const categories = [
   "Laptop",
@@ -22,6 +23,7 @@ const categories = [
 
 const Products = ({ match }) => {
   const dispatch = useDispatch();
+  const params=useParams();
 
   const alert = useAlert();
 
@@ -41,7 +43,7 @@ const Products = ({ match }) => {
     filteredProductsCount,
   } = useSelector((state) => state.products);
 
-  const keyword = match.params.keyword;
+  const keyword = params.keyword;
 
   const setCurrentPageNo = (e) => {
     setCurrentPage(e);

@@ -23,11 +23,12 @@ import {
 import { Rating } from "@material-ui/lab";
 import { NEW_REVIEW_RESET } from "../../constants/productConstants";
 import { relatedProductsReducer } from "../../reducers/productReducer.js";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const ProductDetails = ({ match ,history}) => {
   const dispatch = useDispatch();
   const params=useParams();
+  const navigate=useNavigate();
   const alert = useAlert();
 
   const { product, loading, error } = useSelector((state) => state.productDetail);
@@ -68,14 +69,13 @@ const ProductDetails = ({ match ,history}) => {
   };
 
   const addToCartHandler = () => {
-    console.log(match)
     dispatch(addItemsToCart(params.id, quantity));
     alert.success("Item Added To Cart");
   };
 
   const buyNowHandler=()=>{
      dispatch(addItemsToCart(params.id,quantity));
-     history.push('/cart')
+     navigate('/cart')
      
   }
 

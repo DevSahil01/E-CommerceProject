@@ -17,11 +17,10 @@ const Categories = ({history}) => {
 {name:'Tops',image:tops},{name:'Camera',image:camera},{name:'Smartphone',image:smartphone}]
   return (
     <div className='categoriesContainer'>
-        {categoryData.map((category)=>{
+        {categoryData.map((category,index)=>{
             const {name,image}=category;
-            console.log(image)
             return (
-                <div className='category' onClick={()=>handleClick(name)}>
+                <div key={name+index} className='category' onClick={()=>handleClick(name)}>
                     <img src={image}/>
                     <p>{name}</p>
                 </div>

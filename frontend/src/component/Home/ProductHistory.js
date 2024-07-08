@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import ProductCard from './ProductCard';
@@ -6,18 +6,28 @@ import ProductCard from './ProductCard';
 
 const ProductHistory = () => {
   const [productHistory,setProductHistory]=React.useState({});
+  const [displayBox,setDisplayBox]=useState('flex');
   const getProductHistory=async ()=>{
-       const {productHistory}=(await axios.get('/api/v1/userdata')).data['productHistory'];
-       setProductHistory(productHistory)
+      try{
+        const {productHistory}=(await axios.get('/api/v1/userdata')).data['productHistory'];
+      }
+      catch(err){
+         if(err.response.status===401){
+              setDisplayBox('none');
+         }
+      }
+      
   }
   useEffect(()=>{
       getProductHistory()
   },[])
   return (
     <div>
+      {displayBox==='flex' && 
+      <>
        <h2 className="homeHeading">Recently viewed </h2>
        <div className="container" id="container">
-       <div  className='cartItems' >
+       <div  style={{display:displayBox}} >
         {
         productHistory.length &&  
         productHistory.map((item)=>{
@@ -25,8 +35,9 @@ const ProductHistory = () => {
         })
           }
         </div>
-
-       </div>
+        </div>
+        </>
+       }
     </div>
   )
 }

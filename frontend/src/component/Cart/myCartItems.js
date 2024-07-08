@@ -52,7 +52,7 @@ const MycartItems = ({history}) => {
         {
         cartItems.length &&  
         cartItems.map((item)=>{
-            return  <ProductCard key={item.id} Comp={'cart'} product={item}/>
+            return  <ProductCard key={item.product} Comp={'cart'} product={item}/>
         })
           }
         </div>

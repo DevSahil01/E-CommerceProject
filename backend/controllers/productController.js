@@ -92,7 +92,6 @@ exports.getProductDetails = async (req, res, next) => {
 
   if(req.cookies['token']){
       const {id}=jwt.verify(req.cookies['token'],process.env.JWT_SECRET);
-      
       userData.find({userid:id})
       .then((doc)=>{
           const productHistory=doc[0].productHistory.filter((pr)=>

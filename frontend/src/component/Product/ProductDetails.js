@@ -23,14 +23,14 @@ import {
 import { Rating } from "@material-ui/lab";
 import { NEW_REVIEW_RESET } from "../../constants/productConstants";
 import { relatedProductsReducer } from "../../reducers/productReducer.js";
+import { useParams } from "react-router-dom";
 
 const ProductDetails = ({ match ,history}) => {
   const dispatch = useDispatch();
+  const params=useParams();
   const alert = useAlert();
 
-  const { product, loading, error } = useSelector(
-    (state) => state.productDetails
-  );
+  const { product, loading, error } = useSelector((state) => state.productDetail);
   const relatedProducts=useSelector(
     (state)=>state.relatedProducts
   )['relatedProducts']
@@ -68,13 +68,13 @@ const ProductDetails = ({ match ,history}) => {
   };
 
   const addToCartHandler = () => {
-    console.log(match.params.id)
-    dispatch(addItemsToCart(match.params.id, quantity));
+    console.log(match)
+    dispatch(addItemsToCart(params.id, quantity));
     alert.success("Item Added To Cart");
   };
 
   const buyNowHandler=()=>{
-     dispatch(addItemsToCart(match.params.id,quantity));
+     dispatch(addItemsToCart(params.id,quantity));
      history.push('/cart')
      
   }
@@ -88,7 +88,7 @@ const ProductDetails = ({ match ,history}) => {
 
     myForm.set("rating", rating);
     myForm.set("comment", comment);
-    myForm.set("productId", match.params.id);
+    myForm.set("productId", params.id);
 
     dispatch(newReview(myForm));
 
@@ -110,11 +110,11 @@ const ProductDetails = ({ match ,history}) => {
       alert.success("Review Submitted Successfully");
       dispatch({ type: NEW_REVIEW_RESET });
     }
-    dispatch(getProductDetails(match.params.id));
+    dispatch(getProductDetails(params.id));
 
     window.scrollTo(0,0);
     
-  }, [dispatch, match.params.id, error, alert, reviewError, success]);
+  }, [dispatch, params.id, error, alert, reviewError, success]);
 
   const DiscountPercent=Math.floor((((product.MRP-product.price)/product.MRP)*100))+"%";
 

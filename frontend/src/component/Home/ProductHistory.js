@@ -10,6 +10,7 @@ const ProductHistory = () => {
   const getProductHistory=async ()=>{
       try{
         const {productHistory}=(await axios.get('/api/v1/userdata')).data['productHistory'];
+        setProductHistory(productHistory)
       }
       catch(err){
          if(err.response.status===401){

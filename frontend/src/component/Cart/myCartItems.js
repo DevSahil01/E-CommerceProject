@@ -43,38 +43,37 @@ const MycartItems = ({history}) => {
   };
 
   return (
-    <div>
-     <h2 className="homeHeading">Continue Shopping</h2>
-     <div className="container" id="container">
-      <div className='cartItems' >
-        <NavigateBefore onClick={()=>scrollView('left')}/>
-        <div ref={containerRef} id='cartContainer'>
-        {
-        cartItems.length &&  
-        cartItems.map((item)=>{
-            return  <ProductCard key={item.product} Comp={'cart'} product={item}/>
-        })
-          }
-        </div>
-      
-      <NavigateNext onClick={()=>scrollView('right')}/>
+    <>
+    {cartItems.length>0 &&
+      <div>
+      <h2 className="homeHeading">Continue Shopping</h2>
+      <div className="container" id="container">
+       <div className='cartItems' >
+         <NavigateBefore onClick={()=>scrollView('left')}/>
+         <div ref={containerRef} id='cartContainer'>
+         {cartItems.map((item)=>{
+             return  <ProductCard key={item.product} Comp={'cart'} product={item}/>
+         }) }
+         </div>
+       <NavigateNext onClick={()=>scrollView('right')}/>
+       </div>
+       <div className='checkoutSection'>
+         <div>
+ 
+          {total>499 &&<span><CheckCircleIcon style={{color:'#067D62'}}/></span>}<div className='statusBar'>
+             <div className='filler' style={fillerStyle}></div>
+          </div><span>₹ 499</span>
+         </div>
+           {total<499?<p>Add items worth {499-total} for Free Delivery</p>:<p>Your order is eligible for free delivery</p>}
+           <p>Subtotal ({cartItems.length} items):<b>{`₹ ${total}`} </b> </p>
+           <button onClick={checkoutHandler}>Proced to buy</button>
+       </div>
+     
       </div>
-      <div className='checkoutSection'>
-        <div>
-
-         {total>499 &&<span><CheckCircleIcon style={{color:'#067D62'}}/></span>}<div className='statusBar'>
-            <div className='filler' style={fillerStyle}></div>
-         </div><span>₹ 499</span>
-        </div>
-          {total<499?<p>Add items worth {499-total} for Free Delivery</p>:<p>Your order is eligible for free delivery</p>}
-          <p>Subtotal ({cartItems.length} items):<b>{`₹ ${total}`} </b> </p>
-          <button onClick={checkoutHandler}>Proced to buy</button>
-      </div>
-    
      </div>
-     
-     
-    </div>
+    }
+    </>
+    
   )
 }
 

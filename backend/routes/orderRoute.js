@@ -6,13 +6,14 @@ const {
   getAllOrders,
   updateOrder,
   deleteOrder,
-  cancelOrder
+  cancelOrder,
+  createID
 } = require("../controllers/orderController");
 const router = express.Router();
 
 const { isAuthenticatedUser, authorizeRoles } = require("../middleware/auth");
 
-router.route("/order/new").post(isAuthenticatedUser, newOrder);
+router.route("/order/new").post(isAuthenticatedUser, createID);
 
 router.route("/order/:id").get(isAuthenticatedUser, getSingleOrder);
 

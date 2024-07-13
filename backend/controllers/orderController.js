@@ -2,36 +2,55 @@ const Order = require("../models/orderModel");
 const Product = require("../models/productModel");
 const ErrorHander = require("../utils/errorhander");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
+const Razorpay = require("razorpay");
 
 // Create new Order
-exports.newOrder = catchAsyncErrors(async (req, res, next) => {
-  const {
-    shippingInfo,
-    orderItems,
-    paymentInfo,
-    itemsPrice,
-    taxPrice,
-    shippingPrice,
-    totalPrice,
-  } = req.body;
+// exports.newOrder = catchAsyncErrors(async (req, res, next) => {
+//   const {
+//     shippingInfo,
+//     orderItems,
+//     paymentInfo,
+//     itemsPrice,
+//     taxPrice,
+//     shippingPrice,
+//     totalPrice,
+//   } = req.body;
 
-  const order = await Order.create({
-    shippingInfo,
-    orderItems,
-    paymentInfo,
-    itemsPrice,
-    taxPrice,
-    shippingPrice,
-    totalPrice,
-    paidAt: Date.now(),
-    user: req.user._id,
-  });
+//   const order = await Order.create({
+//     shippingInfo,
+//     orderItems,
+//     paymentInfo,
+//     itemsPrice,
+//     taxPrice,
+//     shippingPrice,
+//     totalPrice,
+//     paidAt: Date.now(),
+//     user: req.user._id,
+//   });
 
-  res.status(201).json({
-    success: true,
-    order,
-  });
-});
+//   res.status(201).json({
+//     success: true,
+//     order,
+//   });
+// });
+
+//create id on new payment
+exports.createID=catchAsyncErrors(async (req,res,next)=>{
+      var instance = new Razorpay({
+         key_id:process.env.RAZORPAY_KEY_ID,
+         key_secret:process.env.RAZORPAY_KEY_SECRET
+      })
+
+      var options={
+         amount:5000,
+         currency:"INR",
+         receipt:"order_rcptid_1"
+      }
+
+      instance.orders.create(options,function(err,order){
+         console.log(order)
+      })
+})
 
 // get Single Order
 exports.getSingleOrder = catchAsyncErrors(async (req, res, next) => {

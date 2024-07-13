@@ -3,9 +3,11 @@ import { useSelector } from 'react-redux';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import {ArrowLeft, ChangeHistory, NavigateBefore,NavigateNext} from '@material-ui/icons';
 import ProductCard from '../Home/ProductCard';
+import { useNavigate } from 'react-router-dom';
 
-const MycartItems = ({history}) => {
+const MycartItems = () => {
   const {cartItems}=useSelector((state)=>state.cart);
+  const navigate = useNavigate();
   const { loading, error, products } = useSelector((state) => state.products);
   const containerRef=useRef(null);
   const getTotalAmount=(Total,num)=>{
@@ -39,7 +41,7 @@ const MycartItems = ({history}) => {
   }
 
   const checkoutHandler = () => {
-    history.push("/login?redirect=shipping");
+    navigate("/login?redirect=shipping");
   };
 
   return (
@@ -66,7 +68,7 @@ const MycartItems = ({history}) => {
          </div>
            {total<499?<p>Add items worth {499-total} for Free Delivery</p>:<p>Your order is eligible for free delivery</p>}
            <p>Subtotal ({cartItems.length} items):<b>{`₹ ${total}`} </b> </p>
-           <button onClick={checkoutHandler}>Proced to buy</button>
+           <button onClick={checkoutHandler} style={{cursor:'pointer'}}>Proced to buy</button>
        </div>
      
       </div>

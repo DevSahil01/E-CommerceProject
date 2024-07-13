@@ -22,6 +22,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.13.5",
     "nodemailer": "^6.6.3",
+    "razorpay": "^2.9.4",
     "react-router-dom": "^6.24.1",
     "stripe": "^8.222.0",
     "validator": "^13.6.0"

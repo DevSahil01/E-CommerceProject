@@ -7,7 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Typography } from "@material-ui/core";
 import axios from "axios";
 
-const ConfirmOrder = ({ history }) => {
+const ConfirmOrder = () => {
   const { shippingInfo, cartItems } = useSelector((state) => state.cart);
   const { user } = useSelector((state) => state.user);
   const navigate=useNavigate();

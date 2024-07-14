@@ -42,13 +42,22 @@ exports.createID=catchAsyncErrors(async (req,res,next)=>{
       })
 
       var options={
-         amount:5000,
+         amount:parseInt(req.body.amount),
          currency:"INR",
          receipt:"order_rcptid_1"
       }
 
       instance.orders.create(options,function(err,order){
-         console.log(order)
+         if(!err){
+            res.status(200).send({
+                orderInfo:order,
+                key_id:process.env.RAZORPAY_KEY_ID                
+            })
+         }else{
+            res.status(500).send({
+               message:"Error while creating order"
+            })
+         }
       })
 })
 

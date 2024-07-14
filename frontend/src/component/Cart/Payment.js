@@ -1,12 +1,72 @@
-import React from "react";
+import React, { useEffect } from "react";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { clearErrors } from "../../actions/productAction";
+import { createOrder } from "../../actions/orderAction";
 
-// import { PaymentElement } from "@stripe/react-stripe-js";
 
 const CheckOut=()=>{
+   const dispatch=useDispatch();
+   const {order,error}=useSelector((state)=>state.newOrder)
+   const {user}=useSelector((state)=>state.user);
+   const {totalPrice}=JSON.parse(sessionStorage.getItem('orderInfo'));
+   const  loadScript=(src)=>{
+       return new Promise((resolve)=>{
+          const script=document.createElement('script');
+
+          script.src=src;
+
+         script.onload =resolve(true);
+
+          script.onerror=resolve(false);
+
+          document.body.appendChild(script);
+       })
+   }
+   const loadScreen=async ()=>{
+       const res=await loadScript('https://checkout.razorpay.com/v1/checkout.js');
+       if(!res){
+          alert("error while loading payment screen");
+          return ;
+       }
+       else{
+       let options={
+          "key":order.key_id,
+          "amount":totalPrice,
+          "name":"E-commerce Platform",
+          "description":"This is test payment",
+          "image":"../../images/logout.png",
+          "order_id":order.orderInfo.id,
+          "callback_url":"/orders",
+          "prefill":{
+            "name":user.name,
+            "email":user.email,
+            "contact":8289283898
+          },
+          "notes":{
+            "address":"Razorpay Corporate Office"
+          },
+          "theme":{
+             "color":"#3399cc"
+          }
+
+       }
+
+       const paymentObject = new window.Razorpay(options);
+       paymentObject.open();
+      }
+   }
+
+   
+   useEffect(()=>{
+      dispatch(createOrder({amount:totalPrice}));
+      if(!error && order){
+         loadScreen()
+      }
+   },[dispatch])
    return (
       <form>
-        {/* <PaymentElement/> */}
-        <button > submit</button>
+        
       </form>
    )
 }

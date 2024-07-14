@@ -91,6 +91,9 @@ function App() {
         <Route exact path="/order/confirm" element={
           <ProtectedRoute element={<ConfirmOrder />} />
         } />
+        <Route exact path="/process/payment" element={
+           <ProtectedRoute element={<Payment/>}/>
+        }/>
        
         <Route exact path="/success" element={
           <ProtectedRoute element={<OrderSuccess />} />

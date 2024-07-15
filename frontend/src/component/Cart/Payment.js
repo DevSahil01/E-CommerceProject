@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { clearErrors } from "../../actions/productAction";
@@ -13,41 +13,37 @@ const CheckOut=()=>{
    const dispatch=useDispatch();
    const {order,error}=useSelector((state)=>state.newOrder)
    const navigate=useNavigate();
+   const paymentObjectRef=useRef(null);
    const {user}=useSelector((state)=>state.user);
    let {totalPrice}=JSON.parse(sessionStorage.getItem('orderInfo'));
 
-   const  loadScript=(src)=>{
-       return new Promise((resolve)=>{
-          const script=document.createElement('script');
+   // const  loadScript=(src)=>{
+   //     return new Promise((resolve)=>{
+   //        const script=document.createElement('script');
 
-          script.src='https://checkout.razorpay.com/v1/checkout.js';
+   //        script.src='https://checkout.razorpay.com/v1/checkout.js';
 
-         script.onload =resolve(true);
+   //       script.onload =resolve(true);
 
-          script.onerror=()=>{
-               alert("error while payment process")
-          }
+   //        script.onerror=()=>{
+   //             alert("error while payment process")
+   //        }
           
-          document.body.appendChild(script);
-         })
-      }
+   //        document.body.appendChild(script);
+   //       })
+   //    }
    const clearCart=()=>{
       dispatch(emptyCart())
    }
    const loadScreen=async ()=>{
-      //  const res=await loadScript();
-      //  if (!res) {
-      //    return;
-      //  }
-       if (!window.Razorpay) {
-         alert('Razorpay SDK not available.');
-         return;
+       if(paymentObjectRef.current){
+           paymentObjectRef.current.close();
        }
        let options={
           "key":order.key_id,
           "name":"E-commerce Platform",
+          "amount":totalPrice,
           "currency":"INR",
-          "amount":totalPrice*100,
           "order_id":order.orderInfo.id,
           "description":"This is test payment",
           "image":logo,
@@ -79,8 +75,8 @@ const CheckOut=()=>{
         }
       }
          }
-         const paymentObject = new window.Razorpay(options);
-         await paymentObject.open();
+         paymentObjectRef.current = new window.Razorpay(options);
+         await paymentObjectRef.current.open();
          
       }
      
@@ -92,6 +88,11 @@ const CheckOut=()=>{
    useEffect(()=>{
        if(order && user){
          loadScreen()
+         console.log('i am running')
+       }
+
+       return()=>{
+         //  console.log('i am now unmount')
        }
    },[order,user])
    return (

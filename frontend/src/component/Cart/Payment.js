@@ -5,6 +5,8 @@ import { clearErrors } from "../../actions/productAction";
 import { createOrder } from "../../actions/orderAction";
 import { useNavigate } from "react-router-dom";
 import { emptyCart } from "../../actions/cartAction";
+import logo from '../../images/logo.png'
+
 
 
 const CheckOut=()=>{
@@ -12,16 +14,19 @@ const CheckOut=()=>{
    const {order,error}=useSelector((state)=>state.newOrder)
    const navigate=useNavigate();
    const {user}=useSelector((state)=>state.user);
-   const {totalPrice}=JSON.parse(sessionStorage.getItem('orderInfo'));
+   let {totalPrice}=JSON.parse(sessionStorage.getItem('orderInfo'));
+
    const  loadScript=(src)=>{
        return new Promise((resolve)=>{
           const script=document.createElement('script');
 
-          script.src=src;
+          script.src='https://checkout.razorpay.com/v1/checkout.js';
 
          script.onload =resolve(true);
 
-          script.onerror=resolve(false);
+          script.onerror=()=>{
+               alert("error while payment process")
+          }
           
           document.body.appendChild(script);
          })
@@ -30,21 +35,30 @@ const CheckOut=()=>{
       dispatch(emptyCart())
    }
    const loadScreen=async ()=>{
-       const res=await loadScript('https://checkout.razorpay.com/v1/checkout.js');
-       if(!res){
-          alert("error while loading payment screen");
-          return ;
+      //  const res=await loadScript();
+      //  if (!res) {
+      //    return;
+      //  }
+       if (!window.Razorpay) {
+         alert('Razorpay SDK not available.');
+         return;
        }
+       totalPrice*=100;
 
+       console.log(user.name)
+       console.log(user.email)
+
+       console.log(totalPrice)
        let options={
           "key":order.key_id,
-          "amount":totalPrice.toString(),
           "name":"E-commerce Platform",
-          "description":"This is test payment",
-          "image":"../../images/logout.png",
+          "currency":"INR",
+          "amount":totalPrice,
           "order_id":order.orderInfo.id,
-         "handler": async function (response) {
-            const data = {
+          "description":"This is test payment",
+          "image":logo,
+          "handler": function (response) {
+          const data = {
                 orderCreationId: order.orderInfo.id,
                 razorpayPaymentId: response.razorpay_payment_id,
                 razorpayOrderId: response.razorpay_order_id,
@@ -61,29 +75,23 @@ const CheckOut=()=>{
           "prefill":{
             "name":user.name,
             "email":user.email,
-            "contact":8289283898
-          },
-          "notes":{
-            "address":"Razorpay Corporate Office"
-          },
-          "theme":{
-             "color":"#3399cc"
+            "contact":"7039986842"
           }
-
-       }
-
-       const paymentObject = new window.Razorpay(options);
-       paymentObject.open();
+         }
+         const paymentObject = new window.Razorpay(options);
+         await paymentObject.open();
       }
-      if(order){
-         loadScreen()
-      }
-   
+     
    useEffect(()=>{
       dispatch(createOrder({amount:totalPrice}));
-      
-      
+
    },[dispatch])
+
+   useEffect(()=>{
+       if(order && user){
+         loadScreen()
+       }
+   },[order,user])
    return (
       <form>
         

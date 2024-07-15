@@ -19,7 +19,7 @@ const MyOrders = () => {
 
   const { loading, error, orders } = useSelector((state) => state.myOrders);
   const { user } = useSelector((state) => state.user);
-  const {error:cancelError,isCancel}=useSelector((state)=>state.cancelOrder);
+  // const {cancelError,isCancel}=useSelector((state)=>state.cancelOrder);
 
   //order cancel function 
   const handleOrderCancel=async(id)=>{
@@ -97,18 +97,18 @@ const MyOrders = () => {
       dispatch(clearErrors());
     }
     
-    if (cancelError) {
-      alert.error(cancelError);
-      dispatch(clearErrors());
-    }
-    if (isCancel) {
-      alert.success("Order Updated Successfully");
-      dispatch({ type:CANCEL_ORDER_SUCCESS });
-    }
+    // if (cancelError) {
+    //   alert.error(cancelError);
+    //   dispatch(clearErrors());
+    // }
+    // if (isCancel) {
+    //   alert.success("Order Updated Successfully");
+    //   dispatch({ type:CANCEL_ORDER_SUCCESS });
+    // }
 
 
     dispatch(myOrders());
-  }, [dispatch, alert, error,isCancel,cancelError]);
+  }, [dispatch, alert, error]);
 
   return (
     <Fragment>

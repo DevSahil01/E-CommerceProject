@@ -5,10 +5,12 @@ import bottom from '../../images/bottom.jpg';
 import tops from '../../images/Tops.jpeg';
 import camera from '../../images/camera.jpg';
 import smartphone from '../../images/smartphone.jpg';
+import { useNavigate } from 'react-router-dom';
 
-const Categories = ({history}) => {
+const Categories = () => {
+  const navigate= useNavigate();
   const handleClick=(name)=>{
-        history.push(`/products?cat=${name}`)
+        navigate(`/products?cat=${name}`)
   }
   const categoryData=[{
     name:'Laptop',

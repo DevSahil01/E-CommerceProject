@@ -3,11 +3,14 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { clearErrors } from "../../actions/productAction";
 import { createOrder } from "../../actions/orderAction";
+import { useNavigate } from "react-router-dom";
+import { emptyCart } from "../../actions/cartAction";
 
 
 const CheckOut=()=>{
    const dispatch=useDispatch();
    const {order,error}=useSelector((state)=>state.newOrder)
+   const navigate=useNavigate();
    const {user}=useSelector((state)=>state.user);
    const {totalPrice}=JSON.parse(sessionStorage.getItem('orderInfo'));
    const  loadScript=(src)=>{
@@ -19,9 +22,12 @@ const CheckOut=()=>{
          script.onload =resolve(true);
 
           script.onerror=resolve(false);
-
+          
           document.body.appendChild(script);
-       })
+         })
+      }
+   const clearCart=()=>{
+      dispatch(emptyCart())
    }
    const loadScreen=async ()=>{
        const res=await loadScript('https://checkout.razorpay.com/v1/checkout.js');
@@ -29,15 +35,29 @@ const CheckOut=()=>{
           alert("error while loading payment screen");
           return ;
        }
-       else{
+
        let options={
           "key":order.key_id,
-          "amount":totalPrice,
+          "amount":totalPrice.toString(),
           "name":"E-commerce Platform",
           "description":"This is test payment",
           "image":"../../images/logout.png",
           "order_id":order.orderInfo.id,
-          "callback_url":"/orders",
+         "handler": async function (response) {
+            const data = {
+                orderCreationId: order.orderInfo.id,
+                razorpayPaymentId: response.razorpay_payment_id,
+                razorpayOrderId: response.razorpay_order_id,
+                razorpaySignature: response.razorpay_signature,
+            };
+            
+           sessionStorage.removeItem('orderInfo');
+
+           clearCart();
+           
+           navigate('/orders');
+           
+        },
           "prefill":{
             "name":user.name,
             "email":user.email,
@@ -55,14 +75,14 @@ const CheckOut=()=>{
        const paymentObject = new window.Razorpay(options);
        paymentObject.open();
       }
-   }
-
+      if(order){
+         loadScreen()
+      }
    
    useEffect(()=>{
       dispatch(createOrder({amount:totalPrice}));
-      if(!error && order){
-         loadScreen()
-      }
+      
+      
    },[dispatch])
    return (
       <form>

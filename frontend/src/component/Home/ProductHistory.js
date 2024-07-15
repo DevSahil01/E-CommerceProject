@@ -28,7 +28,7 @@ const ProductHistory = () => {
       <>
        <h2 className="homeHeading">Recently viewed </h2>
        <div className="container" id="container">
-       <div  style={{display:displayBox}} >
+       <div  style={{display:displayBox,flexWrap:"wrap"}} >
         {
         productHistory.length &&  
         productHistory.map((item)=>{

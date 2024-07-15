@@ -43,17 +43,11 @@ const CheckOut=()=>{
          alert('Razorpay SDK not available.');
          return;
        }
-       totalPrice*=100;
-
-       console.log(user.name)
-       console.log(user.email)
-
-       console.log(totalPrice)
        let options={
           "key":order.key_id,
           "name":"E-commerce Platform",
           "currency":"INR",
-          "amount":totalPrice,
+          "amount":totalPrice*100,
           "order_id":order.orderInfo.id,
           "description":"This is test payment",
           "image":logo,
@@ -77,9 +71,17 @@ const CheckOut=()=>{
             "email":user.email,
             "contact":"7039986842"
           }
+          ,
+          "modal": {
+         "ondismiss": function() {
+            alert("Payment process was cancelled. You can try again.");
+            navigate('/order/confirm');
+        }
+      }
          }
          const paymentObject = new window.Razorpay(options);
          await paymentObject.open();
+         
       }
      
    useEffect(()=>{
